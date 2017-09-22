@@ -119,6 +119,34 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    printf("\n");
+    ps_log("=== test execl ===\n");
+    sleep(SLEEP_SEC);
+    execl("./cmd_process", "cmd_process", (char *)0);
+
+    /* do not execute */
+    ps_log("=== test execl ===\n");
+    /* int execl(const char *path, const char *arg, ... (char  *) NULL); */
+    execl("/bin/ls", "ls", "-al", "/etc/passwd", (char *)0); 
+
+    ps_log("=== test execlp ===\n");
+    /* int execlp(const char *file, const char *arg, ... (char  *) NULL); */
+    execlp("ls", "ls", "-al", "/etc/passwd", (char *)0);
+
+    ps_log("=== test execv ===\n");
+    char *argv[] = {"ls", "-al", "/etc/passwd", (char *)0};
+    /* int execv(const char *path, char *const argv[]); */
+    execv("/bin/ls", argv);
+   
+    ps_log("=== test execvp ===\n");
+    /* int execvp(const char *file, char *const argv[]); */ 
+    execvp("ls", argv);
+
+    ps_log("=== test execve ===\n");
+    /* int execve(const char *filename, char *const argv[], char *const envp[]); */
+    char *envp[] = {"PATH=/bin", 0};
+    execve("/bin/ls", argv, envp);
+    
     ps_log("%s: end\n", __FILE__);
     return EXIT_SUCCESS;
 }
