@@ -3,7 +3,8 @@
 #
 PWD         := $(shell pwd)
 KVERSION    := $(shell uname -r)
-KERNEL_DIR   = /usr/src/linux-headers-$(KVERSION)/
+KERNEL_DIR   = /lib/modules/$(KVERSION)/build
+#KERNEL_DIR   = /usr/src/linux-headers-$(KVERSION)/
 
 MODULE_NAME  = test_misc_register
 obj-m       := $(MODULE_NAME).o
