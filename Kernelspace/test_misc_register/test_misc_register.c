@@ -1,4 +1,4 @@
-#include <linux/miscdevice.h> 
+#include <linux/miscdevice.h>
 #include <linux/fs.h>
 #include <linux/module.h>
 
