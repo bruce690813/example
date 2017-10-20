@@ -22,9 +22,9 @@ struct node *add_node(int data)
     struct node *node = (struct node *)malloc(sizeof(struct node));
     if (node == NULL) return;
     node->data  = data;
-    node->left  = NULL;   
-    node->right = NULL;   
- 
+    node->left  = NULL;
+    node->right = NULL;
+
     return node;
 }
 
@@ -32,22 +32,22 @@ void padding(char ch, int n)
 {
     int i;
     for (i = 0; i < n; i++)
-    printf("%c%c%c%c%c%c%c", ch, ch, ch, ch, ch, ch, ch);
+        printf("%c%c%c%c%c%c%c", ch, ch, ch, ch, ch, ch, ch);
 }
 
 void dump_tree(struct node *node, int depth)
 {
     if (node == NULL) return;
     dump_tree(node->left, depth+1);
-    padding(' ', depth);   
-    printf("[%d]%d\n", depth, node->data); 
+    padding(' ', depth);
+    printf("[%d]%d\n", depth, node->data);
     dump_tree(node->right, depth+1);
 }
 
 void main()
 {
     struct node *root = NULL;
-    
+
     root = add_node(60);
 
     root->left = add_node(41);
@@ -62,11 +62,11 @@ void main()
     root->left->right->right = add_node(55);
     root->right->left->left = add_node(63);
     root->right->left->right = add_node(70);
-  
+
     root->left->right->left->left = add_node(42);
     root->right->left->left->left = add_node(62);
     root->right->left->left->right = add_node(64);
 
     dump_tree(root, 1);
     printf("Maximum Depth or Height of a Tree = %d\n", max_depth(root));
-}    
+}
