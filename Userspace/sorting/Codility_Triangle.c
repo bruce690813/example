@@ -96,7 +96,7 @@ int solution(int A[], int N)
     //quick sort
     qsort(A, N, sizeof(int), cmpfunc);
 
-    for (int i; i < N-2; i++) {
+    for (i = 0; i < N-2; i++) {
         long long P, Q, R;
         P = A[i];
         Q = A[i+1];
