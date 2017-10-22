@@ -24,54 +24,55 @@ Elements of input arrays can be modified.
 Detected time complexity:
 O(N*log(N)) or O(N)
 expand allExample tests
-▶ example1 
+▶ example1
 example test, positive answer ✔OK
 expand allCorrectness tests
-▶ extreme_empty 
+▶ extreme_empty
 empty sequence ✔OK
-▶ extreme_single 
+▶ extreme_single
 sequence of one element ✔OK
-▶ extreme_two_elems 
+▶ extreme_two_elems
 sequence of three distinct elements ✔OK
-▶ extreme_one_value 
+▶ extreme_one_value
 sequence of 10 equal elements ✔OK
-▶ extreme_negative 
+▶ extreme_negative
 sequence of negative elements, length=5 ✔OK
-▶ extreme_big_values 
+▶ extreme_big_values
 sequence with big values, length=5 ✔OK
-▶ medium1 
+▶ medium1
 chaotic sequence of value sfrom [0..1K], length=100 ✔OK
-▶ medium2 
+▶ medium2
 chaotic sequence of value sfrom [0..1K], length=200 ✔OK
-▶ medium3 
+▶ medium3
 chaotic sequence of values from [0..10], length=200 ✔OK
 expand allPerformance tests
-▶ large1 
+▶ large1
 chaotic sequence of values from [0..100K], length=10K ✔OK
-▶ large_random1 
+▶ large_random1
 chaotic sequence of values from [-1M..1M], length=100K ✔OK
-▶ large_random2 
+▶ large_random2
 another chaotic sequence of values from [-1M..1M], length=100K ✔OK
 */
 
-int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
+int cmpfunc(const void *a, const void *b)
+{
+    return ( *(int*)a - *(int*)b );
 }
 
-int solution(int A[], int N) {
+int solution(int A[], int N)
+{
     if (N == 0) return 0;
     int i;
     int distinct_count = 1;
-    
-    //quick sort       
+
+    //quick sort
     qsort(A, N, sizeof(int), cmpfunc);
- 
+
     //xor
     for (i = 0; i < N; i++) {
         if (i == N-1) break;
-        if ((A[i] ^ A[i+1]) != 0)  distinct_count++;      
-    }    
-    
+        if ((A[i] ^ A[i+1]) != 0)  distinct_count++;
+    }
+
     return distinct_count;
 }
-

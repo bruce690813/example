@@ -28,30 +28,70 @@ the function should return 1, as explained above. Given array A such that:
   A[3] = 1
 the function should return 0.
 
-Assume that:
+For example, for the input [5, 3, 3] (expected 1).
+For example, for the input [1, 1, 1, 1, 5, 5, 5] (expected 1).
 
+Assume that:
 N is an integer within the range [0..100,000];
 each element of array A is an integer within the range [−2,147,483,648..2,147,483,647].
-Complexity:
 
+Complexity:
 expected worst-case time complexity is O(N*log(N));
 expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).
 Elements of input arrays can be modified.
 
-For example, for the input [5, 3, 3] (expected 1).
-For example, for the input [1, 1, 1, 1, 5, 5, 5] (expected 1).
+Detected time complexity:
+O(N*log(N))
+expand allExample tests
+▶ example
+example, positive answer, length=6 ✔OK
+▶ example1
+example, answer is zero, length=4 ✔OK
+expand allCorrectness tests
+▶ extreme_empty
+empty sequence ✔OK
+▶ extreme_single
+1-element sequence ✔OK
+▶ extreme_two_elems
+2-element sequence ✔OK
+▶ extreme_negative1
+three equal negative numbers ✔OK
+▶ extreme_arith_overflow1
+overflow test, 3 MAXINTs ✔OK
+▶ extreme_arith_overflow2
+overflow test, 10 and 2 MININTs ✔OK
+▶ extreme_arith_overflow3
+overflow test, 0 and 2 MAXINTs ✔OK
+▶ medium1
+chaotic sequence of values from [0..100K], length=30 ✔OK
+▶ medium2
+chaotic sequence of values from [0..1K], length=50 ✔OK
+▶ medium3
+chaotic sequence of values from [0..1K], length=100 ✔OK
+expand allPerformance tests
+▶ large1
+chaotic sequence with values from [0..100K], length=10K ✔OK
+▶ large2
+1 followed by an ascending sequence of ~50K elements from [0..100K], length=~50K ✔OK
+▶ large_random
+chaotic sequence of values from [0..1M], length=100K ✔OK
+▶ large_negative
+chaotic sequence of negative values from [-1M..-1], length=100K ✔OK
+▶ large_negative2
+chaotic sequence of negative values from [-10..-1], length=100K ✔OK
+▶ large_negative3
+sequence of -1 value, length=100K ✔OK
 */
 
-int cmpfunc(const void * a, const void * b)
+int cmpfunc(const void *a, const void *b)
 {
-    return( *(int*)a - *(int*)b );
+    return ( *(int*)a - *(int*)b );
 }
 
 int solution(int A[], int N)
 {
     if (N < 3) return 0;
     int i;
-    int triangle_count = 0;
 
     //quick sort
     qsort(A, N, sizeof(int), cmpfunc);
