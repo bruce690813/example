@@ -63,7 +63,7 @@ int solution(int A[], int N)
         R = A[i+2];
         if (((P + Q) > R) && (((Q + R) > P) && ((P + R) > Q)))
             return 1;
-    }        
-            
+    }
+
     return 0;
 }
