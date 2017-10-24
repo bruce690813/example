@@ -104,5 +104,3 @@ int solution(int A[], int N)
     return smallest_positive+1;
 }
 */
-
-
