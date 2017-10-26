@@ -1,0 +1,26 @@
+$ ip maddr show  
+5:	em2
+	inet  225.0.0.37
+
+$ netstat -g
+IPv6/IPv4 Group Memberships
+Interface       RefCnt Group
+--------------- ------ ---------------------
+em2             1      225.0.0.37
+
+$ netstat -sgu
+UdpLite:
+IpExt:
+    InMcastPkts: 498964595
+    OutMcastPkts: 62
+    InBcastPkts: 283816886
+    InOctets: 1832820724
+    OutOctets: 315730529
+    InMcastOctets: 756264350
+    OutMcastOctets: 2480
+    InBcastOctets: -93025979
+    InNoECTPkts: -925080367
+    InECT1Pkts: 76
+    InECT0Pkts: 1028
+    InCEPkts: 474
+
