@@ -1,0 +1,12 @@
+$ ./test_backtrace
+backtrace() returned 8 addresses
+[Time 2017/10/31 08:53:26] Call Trace:
+[Backtrace] ./test_backtrace(show_stackframe+0x39) [0x55e21f049d2c]
+[Backtrace] ./test_backtrace(signal_handler+0xe) [0x55e21f049e4b]
+[Backtrace] /lib/x86_64-linux-gnu/libc.so.6(+0x357f0) [0x7fc375ce27f0]
+[Backtrace] ./test_backtrace(func2+0x14) [0x55e21f049c74]
+[Backtrace] ./test_backtrace(func1+0xe) [0x55e21f049c9a]
+[Backtrace] ./test_backtrace(main+0x18) [0x55e21f049cb5]
+[Backtrace] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1) [0x7fc375ccd3f1]
+[Backtrace] ./test_backtrace(_start+0x2a) [0x55e21f049b5a]
+Segmentation fault (core dumped)
