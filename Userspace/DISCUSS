@@ -1,0 +1,9 @@
+//
+    quotient  = number / divisor
+    remainder = number % divisor
+--> remainder = number - (quotient * divisor)  
+
+//
+    middle = (max + min) / 2
+--> middle = min + (max + min) / 2
+  
