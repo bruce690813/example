@@ -1,7 +1,7 @@
 CFLAGS += -g -Wall -Wunused
 CFLAGS += -Wextra -Wcast-qual -Werror
 
-TARGETS = broadcast_client broadcast_server multicast_client multicast_server
+TARGETS = tcp_client tcp_server
 
 all: $(TARGETS)
 
