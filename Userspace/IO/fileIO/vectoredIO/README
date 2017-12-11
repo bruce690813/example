@@ -1,0 +1,12 @@
+$ ./test_writev
+wrote 148 bytes
+
+$ cat buccaneer.txt
+The term buccaneer comes from the word boucan.
+A boucan is a wooden frame used for cooking meat.
+Buccaneer is the West Indies name for a pirate.
+
+$ ./test_readv
+0: The term buccaneer comes from the word boucan.
+1: A boucan is a wooden frame used for cooking meat.
+2: Buccaneer is the West Indies name for a pirate.
