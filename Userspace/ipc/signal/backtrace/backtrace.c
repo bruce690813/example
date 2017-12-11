@@ -11,14 +11,14 @@
 
 extern const char * const sys_siglist[];
 
-void GetLocaltime(time_t *timep, struct tm *mytime)
+static void get_localtime(time_t *timep, struct tm *mytime)
 {
     time(timep);
     tzset();
     localtime_r(timep, mytime);
 }
 
-void show_stackframe()
+static void show_stackframe()
 {
     int i, trace_size;
     void *trace[SIZE];
@@ -29,7 +29,7 @@ void show_stackframe()
 
     time_t timep;
     struct tm mytime;
-    GetLocaltime(&timep, &mytime);
+    get_localtime(&timep, &mytime);
     printf("[Time %d/%02d/%02d %02d:%02d:%02d] Call Trace:\n",
            (1900+mytime.tm_year), (1+mytime.tm_mon), (mytime.tm_mday),
            (mytime.tm_hour), (mytime.tm_min), (mytime.tm_sec));
@@ -40,16 +40,20 @@ void show_stackframe()
     }
 }
 
-void signal_handler()
+static void signal_handler(int signo, siginfo_t *info, void *unused)
 {
+    (void)info;
+    (void)unused;
+
+    printf("Caught signal(%d): %s\n", signo, sys_siglist[signo]);
     show_stackframe();
 }
 
-int init_signal()
+int init_signals()
 {
     struct sigaction sig_term;
-    memset(&sig_term, 0, sizeof(struct sigaction));
 
+    memset(&sig_term, 0, sizeof(struct sigaction));
     if (sigemptyset(&sig_term.sa_mask) == 0) {
         sig_term.sa_sigaction = signal_handler;
         sig_term.sa_flags = SA_SIGINFO|SA_RESETHAND;
@@ -60,6 +64,16 @@ int init_signal()
         printf("sigemptyset(): ERROR!!!");
         return EXIT_FAILURE;
     }
+    /*
+        sigset_t set;
+        sigemptyset(&set);
+        sigaddset(&set, SIGINT);
+        sigaddset(&set, SIGTERM);
+        sigaddset(&set, SIGCHLD);
+        sigaddset(&set, SIGQUIT);
 
+        if (sigprocmask(SIG_SETMASK, &set, NULL) == -1)
+            goto failed;
+    */
     return EXIT_SUCCESS;
 }

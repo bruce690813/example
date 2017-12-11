@@ -8,6 +8,8 @@
 #include <sys/types.h>  //waitpid
 #include <sys/wait.h>  //waitpid
 
+#include "ipc_signal.h"
+
 #define LOOP_NUM  5
 #define SLEEP_SEC 5
 
@@ -62,6 +64,9 @@ int main()
     pid_t pid;
     ps_log("%s: start\n", __FILE__);
 
+    init_signals();
+
+#if 0
     /* system - execute a shell command */
     ps_log("=== test system() ===\n");
     system("./cmd_process");
@@ -71,7 +76,9 @@ int main()
     printf("\n");
     ps_log("=== test fork() ===\n");
     sleep(SLEEP_SEC);
+#endif
 
+#if 0
     if ((pid = fork())) {
         /* Parent dosomething ... */
         ps_log("%s: parent dosmething...\n", __FILE__);
@@ -90,6 +97,11 @@ int main()
         perror("fork failed");
         exit(EXIT_FAILURE);
     }
+
+    printf("111111\n");
+    sleep(100);
+    return 0;
+#endif
 
     /* double fork to avoid zombie process */
     printf("\n");
@@ -118,6 +130,8 @@ int main()
         perror("fork failed");
         exit(EXIT_FAILURE);
     }
+
+return 0;
 
     printf("\n");
     ps_log("=== test execl ===\n");

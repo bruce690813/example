@@ -16,7 +16,7 @@ void func1()
 
 int main()
 {
-    init_signal();
+    init_signals();
 
     func1();
 

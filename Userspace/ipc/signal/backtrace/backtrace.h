@@ -1,6 +1,6 @@
 #ifndef BACKTRACE_H
 #define BACKTRACE_H
 
-extern int  init_signal();
+extern int init_signals();
 
 #endif

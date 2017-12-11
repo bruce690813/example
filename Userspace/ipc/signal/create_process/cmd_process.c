@@ -2,9 +2,10 @@
 #include <string.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include "ipc_signal.h"
 
-#define LOOP_NUM  5
-#define SLEEP_SEC 5
+#define LOOP_NUM  20
+#define SLEEP_SEC 10
 
 static inline void ps_log(const char * format, ...)
 {
@@ -21,6 +22,8 @@ static inline void ps_log(const char * format, ...)
 int main()
 {
     int i = 0;
+
+    //init_signals();
 
     sleep(SLEEP_SEC);
     ps_log("%s: start\n", __FILE__);
