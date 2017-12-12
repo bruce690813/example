@@ -123,10 +123,8 @@ static int set_socket_keepalive(int sockfd, int idle, int intvl, int probes)
    Enable:  system call fails with the error EAGAIN.
    Disable: system call is blocked until the lock is removed or
             converted to a mode that is compatible with the access. */
-static int set_socket_non_blocking(int sockfd)
+static int set_socket_nonblocking(int sockfd)
 {
-    return 0; //test
-
     int flags, ret;
 
     /* fcntl - manipulate file descriptor */
@@ -149,7 +147,7 @@ static int set_socket_non_blocking(int sockfd)
 static int init_connection(int sockfd)
 {
     /* Make the incoming socket non-blocking */
-    if (set_socket_non_blocking(sockfd) == -1)
+    if (set_socket_nonblocking(sockfd) == -1)
         return -1;
 
     /* TCP keepalive */
@@ -271,9 +269,9 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    ret = set_socket_non_blocking(sockfd);
+    ret = set_socket_nonblocking(sockfd);
     if (ret == -1) {
-        fprintf(stderr, "set_socket_non_blocking fail\n");
+        fprintf(stderr, "set_socket_nonblocking fail\n");
         exit(EXIT_FAILURE);
     }
 
@@ -303,6 +301,15 @@ int main(int argc, char *argv[])
     }
 
     event.data.fd = sockfd;
+
+    /* EPOLLIN
+       The associated file is available for read(2) operations.
+
+       EPOLLET
+       Sets the Edge Triggered behavior for the associated file descriptor.
+       The default behavior for epoll is Level Triggered.
+       See epoll(7) for more detailed information about
+       Edge and Level Triggered event distribution architectures. */
     event.events = EPOLLIN | EPOLLET;
 
     /* epoll_ctl - control interface for an epoll descriptor */
@@ -318,9 +325,7 @@ int main(int argc, char *argv[])
         int i, number;
 
         /* epoll_wait, epoll_pwait - wait for an I/O event on an epoll file descriptor */
-        printf("epoll_wait before\n");  //test
         number = epoll_wait(epfd, events, MAX_EVENTS, -1);
-        printf("epoll_wait after\n");  //test
 
         for (i = 0; i < number; i++) {
             if ((events[i].events & EPOLLERR)||
@@ -334,22 +339,18 @@ int main(int argc, char *argv[])
             } else if (sockfd == events[i].data.fd) {
                 /* We have a notification on the listening socket, which
                    means one or more incoming connections. */
-                int i = 0;  //test
-//                while (1) {
-                    i++; //
-                    printf("i = %d\n", i);  //test
-                    int infd;
+                while (1) {
+                    int connfd;
                     struct sockaddr in_addr;
                     socklen_t in_len = sizeof(in_addr);
                     char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
 
                     /* accept: Too many open files */
-                    infd = accept(sockfd, &in_addr, &in_len);
+                    connfd = accept(sockfd, &in_addr, &in_len);
 
-                    if (infd == -1) {
+                    if (connfd == -1) {
                         if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
                             /* We have processed all incoming connections. */
-                            printf("(errno == EAGAIN) || (errno == EWOULDBLOCK)\n");  //test
                             break;
                         } else {
                             perror("accept");
@@ -363,23 +364,22 @@ int main(int argc, char *argv[])
                     if (getnameinfo(&in_addr, in_len, hbuf, sizeof(hbuf), sbuf,
                                     sizeof(sbuf), NI_NUMERICHOST | NI_NUMERICSERV) == 0)
                         printf("Accepted connection on descriptor %d (host=%s, port=%s)\n",
-                               infd, hbuf, sbuf);
+                               connfd, hbuf, sbuf);
 
-                    ret = init_connection(infd);
+                    ret = init_connection(connfd);
                     if (ret == -1) {
-                        close(infd);
+                        close(connfd);
                         break;
                     }
 
-                    event.data.fd = infd;
-                    event.events = EPOLLIN;
-                    //event.events = EPOLLIN | EPOLLET;
-                    ret = epoll_ctl(epfd, EPOLL_CTL_ADD, infd, &event);
+                    event.data.fd = connfd;
+                    event.events = EPOLLIN | EPOLLET;
+                    ret = epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &event);
                     if (ret == -1) {
                         perror("epoll_ctl");
-                        close(infd);
+                        close(connfd);
                     }
-//                }
+                }
                 continue;
             } else {
                 /* We have data on the fd waiting to be read. Read and

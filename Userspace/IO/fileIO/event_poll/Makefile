@@ -1,17 +1,9 @@
 CFLAGS += -g -Wall -Wunused
 CFLAGS += -Wextra -Wcast-qual -Werror
 
-TARGETS = epoll_tcp_server 
+TARGETS = epoll_tcp_server epoll_lt_et
 
-TARGETS_SRC += \
-		     epoll_tcp_server.c \
-
-TARGETS_OBJ = $(TARGETS_SRC:.c=.o)	
-
-$(TARGETS): $(TARGETS_OBJ)
-	gcc $(CFLAGS) -o $@ $^
-
-all: $(TARGETS) 
+all: $(TARGETS)
 
 clean:
-	rm -f $(TARGETS) *~ *.o *.out
+	rm -f $(TARGETS) *~ *.o
